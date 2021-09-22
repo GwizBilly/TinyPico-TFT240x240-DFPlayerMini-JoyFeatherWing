@@ -29,7 +29,7 @@ void vTaskWifi( void *pvParameters ) {
   for( ;; ) {
     Serial.print(pcTaskName);
     const uint16_t port = 8080;
-    const char * host = "192.168.2.13"; // ip or dns
+    const char * host = "192.xxx.x.x"; // ip or dns
     Serial.print("Connecting to ");
     Serial.println(host);
     // Use WiFiClient class to create TCP connections
