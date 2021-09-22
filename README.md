@@ -1,4 +1,4 @@
-# TinPico-TFT240x240-DFplayerMini-JoyFeatherWing
+# TinyPico-TFT240x240-DFPlayerMini-JoyFeatherWing
 Esp32 with TFT display, MP3 player module and gamepad input (joystick + buttons).
 Using freeRTOS.
 I added a few extra buttons to both the esp32 and the DFPlayerMini.
