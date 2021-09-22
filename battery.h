@@ -1,7 +1,8 @@
 void setupBattery() {
   //check if battery is low and scold the user if recharging is necessary.
-  float battery = analogRead(35);
-  Serial.print("Value from pin(Battery): ");Serial.println(battery);
+  //float battery = analogRead(35);
+  float battery = GetBatteryVoltage();
+	Serial.print("Value from pin(Battery): ");Serial.println(battery);
 }
 
 void vTaskBattery(void *pvParameters) {
