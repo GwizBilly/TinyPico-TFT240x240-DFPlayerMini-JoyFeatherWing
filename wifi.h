@@ -4,7 +4,7 @@
 WiFiMulti WiFiMulti;
 
 void setupWifi (void) {
-  WiFiMulti.addAP("VIRGIN187", "DEEED699");
+  WiFiMulti.addAP("SSID", "PSWRD");
 
     Serial.println();
     Serial.println();
