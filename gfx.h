@@ -4,6 +4,7 @@
 #include <SPI.h>
 #include <SPIFFS_ImageReader.h>
 SPIFFS_ImageReader reader;
+SPIFFS_Image img;
 
 #define TFT_CS  27
 #define TFT_RST -1 
@@ -24,9 +25,8 @@ void setupGFX(void) {
   tft.init(240, 240); // Init ST7789 240x240
   tft.setRotation(1);
   tft.fillScreen(ST77XX_BLUE);
-  SPIFFS_Image img;
-  char picture[] = "/sleep.bmp";
+  delay(500);
+	char picture[] = "/adabot.bmp";
   reader.loadBMP(picture, img);
   img.draw(tft,0,0);
-  testfastlines(ST77XX_RED, ST77XX_BLUE);
 }

@@ -9,16 +9,11 @@ void printDetail(uint8_t type, int value);
 void vTaskMp3(void *pvParameters) {
   char *pcTaskName;
   pcTaskName = (char *) pvParameters;
-  static unsigned long timer = millis();
   for( ;; ) {
-    if (millis() - timer > 30000) {
-      timer = millis();
-      myDFPlayer.next();  //Play next mp3 every 3 second.
-    }
     if (myDFPlayer.available()) {
       printDetail(myDFPlayer.readType(), myDFPlayer.read()); //Print the detailed message from DFPlayer to handle different errors and states.
+			vTaskDelay(100);
     }
-    vTaskDelay(1);
   }
 }
 static const char *pcTextForMp3 = "69420\r\n";
@@ -31,8 +26,8 @@ void setupMp3(void) {
     Serial.println(F("2.Please insert the SD card!"));
     return;
   }
-  myDFPlayer.setTimeOut(500); //Set serial communictaion time out 500ms
-  myDFPlayer.volume(25);  //Set volume value (0~30).
+  myDFPlayer.setTimeOut(1000); //Set serial communictaion time out 500ms
+  myDFPlayer.volume(15);  //Set volume value (0~30).
   myDFPlayer.EQ(DFPLAYER_EQ_NORMAL);
   myDFPlayer.outputDevice(DFPLAYER_DEVICE_SD);
 }
@@ -40,7 +35,7 @@ void setupMp3(void) {
 void printDetail(uint8_t type, int value){
   switch (type) {
     case TimeOut:
-      Serial.println(F("Time Out!"));
+      Serial.println(F("DFPlayer Time Out!"));
       break;
     case WrongStack:
       Serial.println(F("Stack Wrong!"));
@@ -96,5 +91,4 @@ void printDetail(uint8_t type, int value){
     default:
       break;
   }
-  
 }

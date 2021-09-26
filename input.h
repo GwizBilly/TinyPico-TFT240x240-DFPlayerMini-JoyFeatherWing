@@ -39,12 +39,17 @@ void vTaskSS(void *pvParameters) {
       
       if (! (buttons & (1 << BUTTON_RIGHT))) {
         Serial.println("Button A pressed");
+				myDFPlayer.next();  //Play next mp3 every 3 second.
       }
       if (! (buttons & (1 << BUTTON_DOWN))) {
         Serial.println("Button B pressed");
-      }
+				myDFPlayer.start();  //Play next mp3 every 3 second.
+				img.draw(tft,0,0);
+			}
       if (! (buttons & (1 << BUTTON_LEFT))) {
         Serial.println("Button Y pressed");
+				myDFPlayer.pause();
+				testfastlines(ST77XX_YELLOW, ST77XX_BLUE);
       }
       if (! (buttons & (1 << BUTTON_UP))) {
         Serial.println("Button X pressed");
