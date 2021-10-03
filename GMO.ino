@@ -2,8 +2,8 @@
 
 #include "fileSystem.h"
 #include "gfx.h"
-#include "mp3.h"
 #include "input.h"
+#include "mp3.h"
 //#include "wifi.h"
 
 void setup() {
@@ -23,7 +23,7 @@ void setup() {
   
   xTaskCreatePinnedToCore(vTaskSS,   "Task 1", 10000, (void*)pcTextForSS,   1, NULL, 0);
   //xTaskCreatePinnedToCore(vTaskWifi, "Task 2", 10000, (void*)pcTextForWifi, 1, NULL, 1);
-  xTaskCreatePinnedToCore(vTaskMp3,  "Task 3", 10000, (void*)pcTextForMp3, 1, NULL, 1);	
+  xTaskCreatePinnedToCore(vTaskMp3,  "Task 3", 10000, (void*)pcTextForMp3, 1, NULL, 1);
 }
 
 void loop() {}
