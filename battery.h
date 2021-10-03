@@ -24,4 +24,4 @@ void vTaskLowBat (void *pvParameters) {
     vTaskDelay(10000);
   }
 }
-static const char *pcTextForLowBat = "69420\r\n";
+static const char *pcTextForLowBat = "I am lowBat function"\r\n";
