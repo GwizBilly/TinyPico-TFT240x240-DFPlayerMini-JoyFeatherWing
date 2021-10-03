@@ -28,15 +28,14 @@ void IRAM_ATTR isr() {
 int last_x = 0, last_y = 0;
 
 void vTaskSS(void *pvParameters) {
-  char *pcTaskName;
-  pcTaskName = (char *) pvParameters;
+  //char *pcTaskName;
+  //pcTaskName = (char *) pvParameters;
   for( ;; ) {
     //Serial.print(pcTaskName);
     if (ssInterrupt.pressed) {
       detachInterrupt(ssInterrupt.PIN);
       /* maybe detach the interrupt until done processing */
       uint32_t buttons = ss.digitalReadBulk(button_mask);
-      
       if (! (buttons & (1 << BUTTON_RIGHT))) {
         Serial.println("Button A pressed");
       }
@@ -54,11 +53,9 @@ void vTaskSS(void *pvParameters) {
         Serial.println("Button SEL pressed");
         digitalWrite(BL_PIN, LOW);
       }
-
       ssInterrupt.pressed = false;
       attachInterruptArg(ssInterrupt.PIN, isr, &ssInterrupt, FALLING);    
     }
-    
     int x = ss.analogRead(2);
     int y = ss.analogRead(3);
     if ((abs(x - last_x) > 3) || (abs(y - last_y) > 3)) {
@@ -66,9 +63,8 @@ void vTaskSS(void *pvParameters) {
       last_x = x;
       last_y = y;
       detachInterrupt(ssInterrupt.PIN);
-      attachInterruptArg(ssInterrupt.PIN, isr, &ssInterrupt, FALLING); 
       ssInterrupt.pressed = false;
-      uint32_t buttons = ss.digitalReadBulk(button_mask);
+      attachInterruptArg(ssInterrupt.PIN, isr, &ssInterrupt, FALLING); 
     }
     vTaskDelay(10);
   }

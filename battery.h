@@ -1,18 +1,27 @@
-void setupBattery() {
-  //check if battery is low and scold the user if recharging is necessary.
-  //float battery = analogRead(35);
-  float battery = GetBatteryVoltage();
-	Serial.print("Value from pin(Battery): ");Serial.println(battery);
+#include <TinyPICO.h>
+TinyPICO tp = TinyPICO();
+bool batStat;
+float setupBattery() {
+	float battery = 0;
+  if(!tp.IsChargingBattery()){
+		battery = tp.GetBatteryVoltage();
+	} 
+	Serial.print(battery);
+	return battery;
 }
 
-void vTaskBattery(void *pvParameters) {
-  char *pcTaskName;
-  pcTaskName = (char *) pvParameters;
-  float battery; 
-  for( ;; ) {
-    battery = analogRead(35);
-    Serial.print("Value from pin(Battery): ");Serial.println(battery);
+void vTaskLowBat (void *pvParameters) {
+  //char *pcTaskName;
+  //pcTaskName = (char *) pvParameters;
+  float battery;
+  for ( ;; ){
+		if(!tp.IsChargingBattery()){
+			battery = tp.GetBatteryVoltage();
+			Serial.print("Value from pin(Battery): ");Serial.println(battery);
+		} else {
+			Serial.println("Currently charging");
+		}
     vTaskDelay(10000);
   }
 }
-static const char *pcTextForBattery = "69420\r\n";
+static const char *pcTextForLowBat = "69420\r\n";

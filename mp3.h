@@ -7,8 +7,8 @@ DFRobotDFPlayerMini myDFPlayer;
 void printDetail(uint8_t type, int value);
 
 void vTaskMp3(void *pvParameters) {
-  char *pcTaskName;
-  pcTaskName = (char *) pvParameters;
+  //char *pcTaskName;
+  //pcTaskName = (char *) pvParameters;
   static unsigned long timer = millis();
   for( ;; ) {
     if (millis() - timer > 30000) {

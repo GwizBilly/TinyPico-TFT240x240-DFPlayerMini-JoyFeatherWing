@@ -5,22 +5,18 @@ WiFiMulti WiFiMulti;
 
 void setupWifi (void) {
   WiFiMulti.addAP("SSID", "PSWRD");
-
-    Serial.println();
-    Serial.println();
-    Serial.print("Waiting for WiFi... ");
-
-    while(WiFiMulti.run() != WL_CONNECTED) {
-        Serial.print(".");
-        delay(500);
-    }
-
-    Serial.println("");
-    Serial.println("WiFi connected");
-    Serial.println("IP address: ");
-    Serial.println(WiFi.localIP());
-
-    delay(500);
+  Serial.println();
+  Serial.println();
+  Serial.print("Waiting for WiFi... ");
+  while(WiFiMulti.run() != WL_CONNECTED) {
+      Serial.print(".");
+      delay(500);
+  }
+  Serial.println("");
+  Serial.println("WiFi connected");
+  Serial.println("IP address: ");
+  Serial.println(WiFi.localIP());
+  delay(500);
 }
 
 void vTaskWifi( void *pvParameters ) {
@@ -34,15 +30,12 @@ void vTaskWifi( void *pvParameters ) {
     Serial.println(host);
     // Use WiFiClient class to create TCP connections
     WiFiClient client;
-
     if (!client.connect(host, port)) {
         Serial.println("Connection failed.");
         vTaskDelete(NULL);
     } else {
       client.print("GET /index.html HTTP/1.1\n\n");
-  
       int maxloops = 0;
-    
       //wait for the server's reply to become available
       while (!client.available() && maxloops < 1000) {
         maxloops++;

@@ -25,8 +25,8 @@ void setupGFX(void) {
   tft.setRotation(1);
   tft.fillScreen(ST77XX_BLUE);
   SPIFFS_Image img;
-  char picture[] = "/sleep.bmp";
+  char picture[] = "/adabot.bmp";
   reader.loadBMP(picture, img);
   img.draw(tft,0,0);
-  testfastlines(ST77XX_RED, ST77XX_BLUE);
+  //testfastlines(ST77XX_RED, ST77XX_BLUE);
 }
