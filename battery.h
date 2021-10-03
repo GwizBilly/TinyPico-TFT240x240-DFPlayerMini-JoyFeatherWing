@@ -2,12 +2,12 @@
 TinyPICO tp = TinyPICO();
 bool batStat;
 float setupBattery() {
-	float battery = 0;
+  float battery = 0;
   if(!tp.IsChargingBattery()){
-		battery = tp.GetBatteryVoltage();
-	} 
-	Serial.print(battery);
-	return battery;
+    battery = tp.GetBatteryVoltage();
+  } 
+  Serial.print(battery);
+  return battery;
 }
 
 void vTaskLowBat (void *pvParameters) {
@@ -15,12 +15,12 @@ void vTaskLowBat (void *pvParameters) {
   //pcTaskName = (char *) pvParameters;
   float battery;
   for ( ;; ){
-		if(!tp.IsChargingBattery()){
-			battery = tp.GetBatteryVoltage();
-			Serial.print("Value from pin(Battery): ");Serial.println(battery);
-		} else {
-			Serial.println("Currently charging");
-		}
+    if(!tp.IsChargingBattery()){
+      battery = tp.GetBatteryVoltage();
+      Serial.print("Value from pin(Battery): ");Serial.println(battery);
+    } else {
+      Serial.println("Currently charging");
+    }
     vTaskDelay(10000);
   }
 }

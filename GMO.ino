@@ -17,23 +17,23 @@ void setup() {
     while(!Serial) {
     delay(1);
   }
-	float bat;
-	if ((bat = setupBattery()) > 0 ){	
-		Serial.println(bat);
-		setupFileSystem();
-		setupGFX();
-		setupInput();
-		setupWifi();
-		setupMp3();
-		setupSleep();
+    float bat;
+    if ((bat = setupBattery()) > 0 ){   
+        Serial.println(bat);
+        setupFileSystem();
+        setupGFX();
+        setupInput();
+        setupWifi();
+        setupMp3();
+        setupSleep();
 
-		xTaskCreatePinnedToCore(vTaskSS,   "Task 1", 10000, (void*)pcTextForSS,   1, NULL, 0);
-		xTaskCreatePinnedToCore(vTaskWifi, "Task 2", 10000, (void*)pcTextForWifi, 1, NULL, 1);
-		xTaskCreatePinnedToCore(vTaskMp3,  "Task 3", 10000, (void*)pcTextForMp3, 1, NULL, 1);
-		xTaskCreatePinnedToCore(vTaskLowBat,"Task 0", 10000, (void*)pcTextForLowBat, 1, NULL, 1);
-	} else {
-		xTaskCreatePinnedToCore(vTaskLowBat,"Task 0", 10000, (void*)pcTextForLowBat, 1, NULL, 1);
-	}
+        xTaskCreatePinnedToCore(vTaskSS,   "Task 1", 10000, (void*)pcTextForSS,   1, NULL, 0);
+        xTaskCreatePinnedToCore(vTaskWifi, "Task 2", 10000, (void*)pcTextForWifi, 1, NULL, 1);
+        xTaskCreatePinnedToCore(vTaskMp3,  "Task 3", 10000, (void*)pcTextForMp3, 1, NULL, 1);
+        xTaskCreatePinnedToCore(vTaskLowBat,"Task 0", 10000, (void*)pcTextForLowBat, 1, NULL, 1);
+    } else {
+        xTaskCreatePinnedToCore(vTaskLowBat,"Task 0", 10000, (void*)pcTextForLowBat, 1, NULL, 1);
+    }
 }
 
 void loop() {}
