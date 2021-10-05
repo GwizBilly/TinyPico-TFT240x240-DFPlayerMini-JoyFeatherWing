@@ -9,7 +9,6 @@ float setupBattery() {
   Serial.print(battery);
   return battery;
 }
-
 void vTaskLowBat (void *pvParameters) {
   //char *pcTaskName;
   //pcTaskName = (char *) pvParameters;
