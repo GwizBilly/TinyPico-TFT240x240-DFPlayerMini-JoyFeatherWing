@@ -1,3 +1,4 @@
+
 #include <Adafruit_GFX.h>    // Core graphics library
 #include <Adafruit_ST7735.h>
 #include <Adafruit_ST7789.h> // Hardware-specific library for ST7789
@@ -5,6 +6,7 @@
 #include <SPIFFS_ImageReader.h>
 SPIFFS_ImageReader reader;
 
+#define BL_PIN 32    //backlight
 #define TFT_CS  27
 #define TFT_RST -1 
 #define TFT_DC  14
@@ -21,6 +23,8 @@ void testfastlines(uint16_t color1, uint16_t color2) {
 }
 
 void setupGFX(void) {
+  pinMode(BL_PIN, OUTPUT);  
+  digitalWrite(BL_PIN, HIGH);
   tft.init(240, 240); // Init ST7789 240x240
   tft.setRotation(1);
   tft.fillScreen(ST77XX_BLUE);
