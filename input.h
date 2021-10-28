@@ -10,18 +10,14 @@ uint32_t button_mask = (1 << BUTTON_RIGHT) | (1 << BUTTON_DOWN) |
                        (1 << BUTTON_SEL);
 struct SSI {
     const uint8_t PIN;
-    uint32_t numberKeyPresses;
     bool pressed;
 };
 SSI ssInterrupt = {5, 0, false};
-
 void IRAM_ATTR isr(void* arg) {
     SSI* s = static_cast<SSI*>(arg);
-    s->numberKeyPresses += 1;
     s->pressed = true;
 }
 void IRAM_ATTR isr() {
-    ssInterrupt.numberKeyPresses += 1;
     ssInterrupt.pressed = true;
 }
 
@@ -30,12 +26,12 @@ int last_x = 0, last_y = 0;
 void vTaskSS(void *pvParameters) {
   //char *pcTaskName;
   //pcTaskName = (char *) pvParameters;
+	bool DETACHED = false;
   for( ;; ) {
-    //Serial.print(pcTaskName);
     if (ssInterrupt.pressed) {
       detachInterrupt(ssInterrupt.PIN);
-      /* maybe detach the interrupt until done processing */
-      uint32_t buttons = ss.digitalReadBulk(button_mask);
+      DETACHED = true;
+			uint32_t buttons = ss.digitalReadBulk(button_mask);
       if (! (buttons & (1 << BUTTON_RIGHT))) {
         Serial.println("Button A pressed");
       }
@@ -53,8 +49,6 @@ void vTaskSS(void *pvParameters) {
         Serial.println("Button SEL pressed");
         digitalWrite(BL_PIN, LOW);
       }
-      ssInterrupt.pressed = false;
-      attachInterruptArg(ssInterrupt.PIN, isr, &ssInterrupt, FALLING);    
     }
     int x = ss.analogRead(2);
     int y = ss.analogRead(3);
@@ -62,11 +56,12 @@ void vTaskSS(void *pvParameters) {
       Serial.print(x); Serial.print(", "); Serial.println(y);
       last_x = x;
       last_y = y;
-      detachInterrupt(ssInterrupt.PIN);
-      ssInterrupt.pressed = false;
-      attachInterruptArg(ssInterrupt.PIN, isr, &ssInterrupt, FALLING); 
     }
-    vTaskDelay(10);
+		if () {
+			ssInterrupt.pressed = false;
+			attachInterruptArg(ssInterrupt.PIN, isr, &ssInterrupt, FALLING);    
+			vTaskDelay(10);
+		}
   }
 }
 static const char *pcTextForSS = "69420\r\n";
