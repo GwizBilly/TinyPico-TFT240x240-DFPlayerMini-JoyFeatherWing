@@ -14,20 +14,22 @@ void setup() {
     delay(1);
   }
   float bat;
+  const char *pcTextForLowBat = "I am lowBat function\r\n";
   if ((bat = setupBattery()) > 0) {   
     Serial.println(bat);
     setupFileSystem();
     setupGFX();
     setupInput();
-    setupWifi();
+    //setupWifi();
     setupMp3();
     setupSleep();
-    xTaskCreatePinnedToCore(vTaskSS,   "Task 1", 10000, (void*)pcTextForSS,   1, NULL, 0);
-    xTaskCreatePinnedToCore(vTaskWifi, "Task 2", 10000, (void*)pcTextForWifi, 1, NULL, 1);
-    xTaskCreatePinnedToCore(vTaskMp3,  "Task 3", 10000, (void*)pcTextForMp3, 1, NULL, 1);
+    xTaskCreatePinnedToCore(vTaskSS,   "Task 1", 10000, NULL,   1, NULL, 0);
+    //xTaskCreatePinnedToCore(vTaskWifi, "Task 2", 10000, NULL, 1, NULL, 1);
+    xTaskCreatePinnedToCore(vTaskMp3,  "Task 3", 10000, NULL, 1, NULL, 1);
     xTaskCreatePinnedToCore(vTaskLowBat,"Task 0", 10000, (void*)pcTextForLowBat, 1, NULL, 1);
   } else {
-    xTaskCreatePinnedToCore(vTaskLowBat,"Task 0", 10000, (void*)pcTextForLowBat, 1, NULL, 1);
+    const char *pcTextForOtherLowBat = "I am also lowBat function\r\n";
+    xTaskCreatePinnedToCore(vTaskLowBat,"Task 0", 10000, (void*)pcTextForOtherLowBat, 1, NULL, 1);
   }
 }
 

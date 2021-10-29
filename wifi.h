@@ -20,10 +20,8 @@ void setupWifi (void) {
 }
 
 void vTaskWifi( void *pvParameters ) {
-  char *pcTaskName;
-  pcTaskName = ( char * ) pvParameters;
+  (void) pvParameters;
   for( ;; ) {
-    Serial.print(pcTaskName);
     const uint16_t port = 8080;
     const char * host = "192.xxx.x.x"; // ip or dns
     Serial.print("Connecting to ");
@@ -59,4 +57,3 @@ void vTaskWifi( void *pvParameters ) {
     vTaskDelay(10000);
   }
 }
-static const char *pcTextForWifi = "WiFiWiFiWiFiWiFi\r\n";

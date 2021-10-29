@@ -7,8 +7,7 @@ DFRobotDFPlayerMini myDFPlayer;
 void printDetail(uint8_t type, int value);
 
 void vTaskMp3(void *pvParameters) {
-  //char *pcTaskName;
-  //pcTaskName = (char *) pvParameters;
+  (void) pvParameters;
   static unsigned long timer = millis();
   for( ;; ) {
     if (millis() - timer > 30000) {
@@ -21,7 +20,6 @@ void vTaskMp3(void *pvParameters) {
     vTaskDelay(1);
   }
 }
-static const char *pcTextForMp3 = "69420\r\n";
 
 void setupMp3(void) {
   mySoftwareSerial.begin(9600);
