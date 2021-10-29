@@ -10,20 +10,21 @@ uint32_t button_mask = (1 << BUTTON_RIGHT) | (1 << BUTTON_DOWN) |
                        (1 << BUTTON_SEL);
 
 struct SSI {
-    const uint8_t PIN;
-    uint32_t numberKeyPresses;
-    bool pressed;
+  const uint8_t PIN;
+  uint32_t numberKeyPresses;
+  bool pressed;
 };
 SSI ssInterrupt = {5, 0, false};
 
 void IRAM_ATTR isr(void* arg) {
-    SSI* s = static_cast<SSI*>(arg);
-    s->numberKeyPresses += 1;
-    s->pressed = true;
+  SSI* s = static_cast<SSI*>(arg);
+  s->numberKeyPresses += 1;
+  s->pressed = true;
 }
+
 void IRAM_ATTR isr() {
-    ssInterrupt.numberKeyPresses += 1;
-    ssInterrupt.pressed = true;
+  ssInterrupt.numberKeyPresses += 1;
+  ssInterrupt.pressed = true;
 }
 
 int last_x = 0, last_y = 0;
@@ -129,15 +130,15 @@ void vTaskSS(void *pvParameters) {
 
 void setupInput(void) {
   if (!ss.begin(0x49)) {
-      Serial.println("ERROR! seesaw not found");
-      while(1);
-    } else {
-      Serial.println("seesaw started");
-      Serial.print("version: ");
-      Serial.println(ss.getVersion(), HEX);
-    }
-    ss.pinModeBulk(button_mask, INPUT_PULLUP);
-    ss.setGPIOInterrupts(button_mask, 1);
-    pinMode(ssInterrupt.PIN, INPUT_PULLUP);
-    attachInterruptArg(ssInterrupt.PIN, isr, &ssInterrupt, FALLING);    
+    Serial.println("ERROR! seesaw not found");
+    while(1);
+  } else {
+    Serial.println("seesaw started");
+    Serial.print("version: ");
+    Serial.println(ss.getVersion(), HEX);
+  }
+  ss.pinModeBulk(button_mask, INPUT_PULLUP);
+  ss.setGPIOInterrupts(button_mask, 1);
+  pinMode(ssInterrupt.PIN, INPUT_PULLUP);
+  attachInterruptArg(ssInterrupt.PIN, isr, &ssInterrupt, FALLING);    
 }
