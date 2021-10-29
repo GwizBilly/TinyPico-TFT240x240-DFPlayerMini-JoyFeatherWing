@@ -5,20 +5,20 @@ float setupBattery() {
   float battery = 0;
   if(!tp.IsChargingBattery()){
     battery = tp.GetBatteryVoltage();
-    delay(1);
-    battery = tp.GetBatteryVoltage();
-  } 
+  } else {
+    battery = 1;
+  }
   Serial.print(battery);
   return battery;
 }
 
 void vTaskLowBat (void *pvParameters) {
   char *pcTaskName;
-  pcTaskName = (char *) pvParameters;
+  pcTaskName = (char *)pvParameters;
   float battery;
-  for ( ;; ){
+  for ( ;; ) {
     Serial.print(pcTaskName);
-    if(!tp.IsChargingBattery()){
+    if (!tp.IsChargingBattery()) {
       battery = tp.GetBatteryVoltage();
       Serial.print("Value from pin(Battery): ");Serial.println(battery);
     } else {
