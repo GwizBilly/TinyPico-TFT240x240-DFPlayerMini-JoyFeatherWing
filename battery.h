@@ -24,6 +24,6 @@ void vTaskLowBat (void *pvParameters) {
     } else {
       Serial.println("Currently charging");
     }
-    vTaskDelay(10000);
+    vTaskDelay(100000);
   }
 }

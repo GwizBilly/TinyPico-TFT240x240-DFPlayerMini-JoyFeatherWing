@@ -10,7 +10,7 @@
 void setup() {
   setupRGB();
   Serial.begin(115200);
-    while(!Serial) {
+  while(!Serial) {
     delay(1);
   }
   float bat;

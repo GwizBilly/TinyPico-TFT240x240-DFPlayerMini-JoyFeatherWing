@@ -29,7 +29,7 @@ void setupMp3(void) {
     Serial.println(F("2.Please insert the SD card!"));
     return;
   }
-  myDFPlayer.setTimeOut(500); //Set serial communictaion time out 500ms
+  myDFPlayer.setTimeOut(1000); //Set serial communictaion time out 500ms
   myDFPlayer.volume(25);  //Set volume value (0~30).
   myDFPlayer.EQ(DFPLAYER_EQ_NORMAL);
   myDFPlayer.outputDevice(DFPLAYER_DEVICE_SD);
