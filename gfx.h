@@ -22,22 +22,24 @@ void testfastlines(uint16_t color1, uint16_t color2) {
   }
 }
 
+SPIFFS_Image img;
+char picture[] = "/bot.bmp";
+SPIFFS_Image imgTwo;
+char pictureTwo[] = "/adabot.bmp";
+
 void setupGFX(void) {
   pinMode(BL_PIN, OUTPUT);  
   digitalWrite(BL_PIN, HIGH);
   tft.init(240, 240); // Init ST7789 240x240
   tft.setRotation(1);
   tft.fillScreen(ST77XX_BLUE);
-  SPIFFS_Image img;
-  char picture[] = "/adabot.bmp";
   reader.loadBMP(picture, img);
   img.draw(tft,0,0);
   //testfastlines(ST77XX_RED, ST77XX_BLUE);
 }
 
-void setupMP3(void) {
-  SPIFFS_Image img;
-  char picture[] = "/MP3Player.bmp";
-  reader.loadBMP(picture, img);
-  img.draw(tft,0,0);
+bool setupMP3(void) {
+  tft.fillScreen(ST77XX_RED);
+  reader.drawBMP("/adabot.bmp", tft, 0, 0);
+	return 1;
 }

@@ -35,7 +35,6 @@ int choice = 0;
 
 void vTaskSSMp3(void *pvParameters) {
   (void) pvParameters;
-  setupMP3();
   for( ;; ) {
     uint32_t buttons = ss.digitalReadBulk(button_mask);
     if (!(buttons & (1 << BUTTON_RIGHT))) {
@@ -90,11 +89,19 @@ void vTaskSS(void *pvParameters) {
 		// ssInterrupt.pressed
 		// make interrupt a function that returns true if interrupt has been triggered recently (woke from sleep)
     if (ssInterrupt.pressed) {
+      detachInterrupt(ssInterrupt.PIN);
       // maybe detach the interrupt until done processing
 			if (started && chooseNow) { 
         if (bool x = handleSelection(choice)) {
-          xTaskCreatePinnedToCore(vTaskSSMp3,"Task 1", 10000, NULL,1,NULL,0);
-          vTaskDelete(NULL);
+          // xTaskCreatePinnedToCore(vTaskSSMp3,"Task 1", 10000, NULL,1,NULL,0);
+					Serial.println("MP3");
+          tft.fillScreen(ST77XX_RED); 
+          reader.drawBMP("/adabot.bmp", tft, 0, 0);
+					/*SPIFFS_Image imgTwo;
+          char pictureTwo[] = "/adabot.bmp";
+					imgTwo.draw(tft,0,0);
+					*/
+					vTaskDelay(1000);
         }
       }
       if (!started) { 
