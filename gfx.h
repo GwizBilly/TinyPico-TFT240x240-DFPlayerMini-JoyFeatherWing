@@ -34,3 +34,10 @@ void setupGFX(void) {
   img.draw(tft,0,0);
   //testfastlines(ST77XX_RED, ST77XX_BLUE);
 }
+
+void setupMP3(void) {
+  SPIFFS_Image img;
+  char picture[] = "/MP3Player.bmp";
+  reader.loadBMP(picture, img);
+  img.draw(tft,0,0);
+}

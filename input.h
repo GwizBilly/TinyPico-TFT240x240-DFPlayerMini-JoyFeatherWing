@@ -8,9 +8,8 @@ Adafruit_seesaw ss;
 uint32_t button_mask = (1 << BUTTON_RIGHT) | (1 << BUTTON_DOWN) | 
                        (1 << BUTTON_LEFT)  | (1 << BUTTON_UP)   |
                        (1 << BUTTON_SEL);
-
 void doChoice(int choice);
-void handleSelection(int choice);
+bool handleSelection(int choice);
 struct SSI {
   const uint8_t PIN;
   bool pressed;
@@ -28,16 +27,63 @@ void IRAM_ATTR isr() {
 
 int last_x = 0, last_y = 0;
 int started = 0;
-char lastDir = 'u';
-int l = 0;
-int r = 0;
-int u = 0;
-int d = 0;
 
 bool choiceOne = false;
 bool choiceTwo = false;
 bool chooseNow = false;
 int choice = 0;
+
+void vTaskSSMp3(void *pvParameters) {
+  (void) pvParameters;
+  setupMP3();
+  for( ;; ) {
+    uint32_t buttons = ss.digitalReadBulk(button_mask);
+    if (!(buttons & (1 << BUTTON_RIGHT))) {
+      Serial.println("Button A pressed");
+    }
+    if (!(buttons & (1 << BUTTON_DOWN))) {
+      Serial.println("Button B pressed");
+    }
+    if (!(buttons & (1 << BUTTON_LEFT))) {
+      Serial.println("Button Y pressed");
+    }
+    if (!(buttons & (1 << BUTTON_UP))) {
+      Serial.println("Button X pressed");
+    }
+    if (!(buttons & (1 << BUTTON_SEL))) {
+        Serial.println("Button SEL pressed");
+    }
+    int x = ss.analogRead(2);
+    int y = ss.analogRead(3);
+		if (x > 600 && last_x < 600) {
+			// down  
+		} else if (last_x > 600 && x < 600) {
+			// not left
+		}
+		if (x < 400 && last_x > 400) {
+			// up 
+		} else if (last_x < 400 && x > 400) {
+			// not right
+		}
+		if (y > 600 && last_y < 600) {
+			// down
+		} else if (last_y > 600 && y < 600) {
+			// not down
+		}
+		if (y < 400 && last_y > 400) {
+			// up
+		} else if (last_y < 400 && y > 400) {
+			// not up
+		}
+    if ((abs(x - last_x) > 3) || (abs(y - last_y) > 3)) {
+			Serial.println("Joy movement");
+      //Serial.print(x); Serial.print(", "); Serial.println(y);
+      last_x = x;
+      last_y = y;
+    }
+  }
+}
+
 void vTaskSS(void *pvParameters) {
   (void) pvParameters;
   for( ;; ) {
@@ -45,7 +91,12 @@ void vTaskSS(void *pvParameters) {
 		// make interrupt a function that returns true if interrupt has been triggered recently (woke from sleep)
     if (ssInterrupt.pressed) {
       // maybe detach the interrupt until done processing
-			if (started && chooseNow) { handleSelection(choice); }
+			if (started && chooseNow) { 
+        if (bool x = handleSelection(choice)) {
+          xTaskCreatePinnedToCore(vTaskSSMp3,"Task 1", 10000, NULL,1,NULL,0);
+          vTaskDelete(NULL);
+        }
+      }
       if (!started) { 
         started = 1; 
         tft.fillScreen(ST77XX_BLACK);
@@ -168,20 +219,24 @@ void doChoice(int choice) {
 				tft.setCursor(80, 120);
 				tft.print("Game");
 		}
+    vTaskDelay(500);
 	}
 }
 
-void handleSelection(int choice) {
+bool handleSelection(int choice) {
+  bool trueChoice = false;
 	switch (choice) {
 		case 1:
 			Serial.println("You chose Game");
+      trueChoice = true;
 			break;
 		case 2:
 			Serial.println("You chose MP3 Player");
+      trueChoice = true;
 			break;
 		default:
 			Serial.println("No selection!");
 	}
 	chooseNow = false;
-	vTaskDelay(500);
+  return trueChoice;
 }
