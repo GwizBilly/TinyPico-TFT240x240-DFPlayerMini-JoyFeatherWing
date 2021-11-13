@@ -9,25 +9,20 @@
 #define TFT_RST -1 
 #define TFT_DC  14
 
+Adafruit_ST7789 tft = Adafruit_ST7789(TFT_CS, TFT_DC, TFT_RST);
+SPIFFS_ImageReader reader;
+SPIFFS_Image img1;
+SPIFFS_Image img2;
 
 void setupGFX(void) {
-  /*
-	reader.loadBMP(picture, img);
-  //reader.loadBMP(picture, imgTwo);
-  img.draw(tft,0,0);
-	*/ //delay(5000);
+	pinMode(BL_PIN, OUTPUT);  
+	digitalWrite(BL_PIN, HIGH);
+	tft.init(240, 240); // Init ST7789 240x240
+	tft.setRotation(1);
+	tft.fillScreen(ST77XX_BLUE);
 }
 
 void vTaskGFX(void *pvParameters) {
-	Adafruit_ST7789 tft = Adafruit_ST7789(TFT_CS, TFT_DC, TFT_RST);
-  pinMode(BL_PIN, OUTPUT);  
-  digitalWrite(BL_PIN, HIGH);
-  tft.init(240, 240); // Init ST7789 240x240
-  tft.setRotation(1);
-  tft.fillScreen(ST77XX_BLUE);
-	SPIFFS_ImageReader reader;
-	SPIFFS_Image img1;
-	SPIFFS_Image img2;
 	char picture[] = "/eyeL.bmp";
 	char pictureTwo[] = "/eyeR.bmp";
 	char pictureThree[] = "/bot.bmp";
@@ -36,12 +31,11 @@ void vTaskGFX(void *pvParameters) {
 	reader.drawBMP(pictureThree, tft, 0, 0);
   (void) pvParameters;
   for( ;; ) {
-		//Serial.println("wooooooooooo");
 		img1.draw(tft,60,80);
 		img2.draw(tft,130,80);
-		vTaskDelay(100);
+		vTaskDelay(10);
 		img2.draw(tft,60,80);
 		img1.draw(tft,130,80);
-		vTaskDelay(100);
+		vTaskDelay(10);
 	}
 }

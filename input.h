@@ -96,11 +96,6 @@ void vTaskSS(void *pvParameters) {
           // xTaskCreatePinnedToCore(vTaskSSMp3,"Task 1", 10000, NULL,1,NULL,0);
 					Serial.println("MP3");
           tft.fillScreen(ST77XX_RED); 
-          reader.drawBMP("/adabot.bmp", tft, 0, 0);
-					/*SPIFFS_Image imgTwo;
-          char pictureTwo[] = "/adabot.bmp";
-					imgTwo.draw(tft,0,0);
-					*/
 					vTaskDelay(1000);
         }
       }

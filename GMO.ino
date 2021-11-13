@@ -2,10 +2,10 @@
 #include "RGB.h"
 #include "fileSystem.h"
 #include "gfx.h"
-//#include "input.h"
-//#include "mp3.h"
-//#include "wifi.h"
-//#include "sleep.h"
+#include "input.h"
+#include "mp3.h"
+#include "wifi.h"
+#include "sleep.h"
 
 void setup() {
   setupRGB();
@@ -19,15 +19,15 @@ void setup() {
 		Serial.println("BooBoo");
     Serial.println(bat);
     setupFileSystem();
-    //setupGFX();
-    //setupInput();
+    setupInput();
+		setupGFX();
     //setupWifi();
-    //setupMp3();
-    //setupSleep();
-    xTaskCreatePinnedToCore(vTaskGFX,   "Task z", 10000, NULL,   1, NULL, 1);
+    setupMp3();
+    setupSleep();
+    xTaskCreatePinnedToCore(vTaskGFX,   "Task z", 10000, NULL,   1, NULL, 0);
     //xTaskCreatePinnedToCore(vTaskSS,   "Task 1", 10000, NULL,   1, NULL, 0);
     //xTaskCreatePinnedToCore(vTaskWifi, "Task 2", 10000, NULL, 1, NULL, 1);
-    //xTaskCreatePinnedToCore(vTaskMp3,  "Task 3", 10000, NULL, 1, NULL, 1);
+    xTaskCreatePinnedToCore(vTaskMp3,  "Task 3", 10000, NULL, 1, NULL, 1);
     xTaskCreatePinnedToCore(vTaskLowBat,"Task 0", 10000, (void*)pcTextForLowBat, 1, NULL, 1);
   } else {
     const char *pcTextForOtherLowBat = "I am also lowBat function\r\n";
