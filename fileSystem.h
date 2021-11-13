@@ -159,7 +159,7 @@ void setupFileSystem(void) {
     while (1);
   }
   // quick test...
-  Serial.println("Boop files");
+  Serial.println("Boop files test");
   writeFile(SPIFFS, "/hello.txt", "Hello ");
   Serial.println("Next print is read");
   readFile(SPIFFS, "/hello.txt");
